@@ -1,9 +1,12 @@
 import React from "react";
-import { View, Text, TextInput, StyleSheet } from "react-native";
+import { View, 
+         Text,
+         TextInput, 
+         StyleSheet } from "react-native";
 
 import COLORS from "../const/colors";
 
-const Input = ({ label }) => {
+const Input = ({ label, ...props }) => {
     return (
         <View style={estilos.formContainer}>
             <Text style={estilos.inputLabel}>
@@ -11,7 +14,8 @@ const Input = ({ label }) => {
             </Text>
             <View style={estilos.inputContainer}>
                 <TextInput style={estilos.textInput} 
-                           autoCorrect={false}/>
+                           autoCorrect={false}
+                           {...props}/>
             </View>
         </View>
     )

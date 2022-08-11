@@ -1,5 +1,5 @@
 import React from "react"
-import { StyleSheet, View, Text } from "react-native"
+import { StyleSheet } from "react-native"
 
 import Cadastro from "./src/telas/Cadastro"
 
@@ -7,8 +7,6 @@ const App = () => {
   return (
     <>
       <Cadastro />
-      
-    
     </>
   )
 }
