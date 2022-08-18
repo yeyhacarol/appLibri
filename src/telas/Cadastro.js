@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState }from "react";
 import { Text,
          View, 
          SafeAreaView, 
@@ -11,8 +11,9 @@ import Button from "../components/Button";
 
 
 const Cadastro = () => {
+    /* Todo state deve possuir um handler */
     /* capturando, armazenando dados com state */
-    const [inputs, setInputs] = React.useState({
+    const [inputs, setInputs] = useState({
         titulo: '',
         descricao: '',
         capa: '',
@@ -20,32 +21,44 @@ const Cadastro = () => {
 
     /* função para manipular a entrada de dados na state no método onChangeText */
     const handleOnChange = (text, input) => {
-        setInputs((prevState) => (
-            /* inserção de dados na state. 
-               sobrescrevendo em cada um dos itens do obj.json o texto digitado na input */
-            console.log(prevState),
-            {...prevState, [input]:text} 
-        ))
+        /* o parâmetro prevState representa o estado atual do state */
+        setInputs((prevState) => ({
+            /* inserção de dados no state. 
+               O ...prevState representa cada um dos itens do array do state, o [input] representa cada uma das inputs e o valor delas que vem por meio da digitação é o text. 
+               A utilização do spread(...) é necessária para que os valores sejam comparados e sobreescrevidos. 
+               [input]:text -> remontar o array da state a cada atualização da state, ou seja, a cada digitação */
+            ...prevState, [input]:text 
+        }))
     }
 
-    /* validando dados de cadastro através desta função */
+    /* state de erro de preenchimento */
+    const [error, setErrors] = useState({})
+
+    /* função para configurar as mensagens de erro na state */
+    const handleErrors = (errorMessage, input) => {
+        setErrors((prevState) => ({
+            ...prevState, [input]:errorMessage
+        }))
+    }
+
+    /* validando dados de cadastro por meio desta função */
     const validate = () => {
-        let validade = true
+        let validade = false
 
         if (!inputs.titulo) {
             validade = false
-            console.log('titulo vazio')
+            handleErrors('Insira um título.', 'titulo')
         }
 
         if (!inputs.descricao) {
             validade = false
-            console.log('descricao vazio')
+            handleErrors('Insira uma descrição.', 'descricao')
             
         }
 
         if (!inputs.capa) {
             validade = false
-            console.log('capa vazio')
+            handleErrors('Insira uma capa.', 'capa')
         }
     }
 
@@ -57,11 +70,17 @@ const Cadastro = () => {
                 </Text>
                 <View style={estilos.viewForm}>
                     <Input label="Título" 
-                           onChangeText={(text) => handleOnChange(text, 'titulo')}/>
+                           onChangeText={(text) => handleOnChange(text, 'titulo')}
+                           onFocus={() => handleErrors('', 'titulo')}
+                           error={error.titulo} />
                     <Input label="Descrição" 
-                           onChangeText={(text) => handleOnChange(text, 'descricao')}/>
+                           onChangeText={(text) => handleOnChange(text, 'descricao')}
+                           onFocus={() => handleErrors('', 'descricao')}
+                           error={error.descricao} />
                     <Input label="Capa"
-                    onChangeText={(text) => handleOnChange(text, 'capa')}/>
+                           onChangeText={(text) => handleOnChange(text, 'capa')}
+                           onFocus={() => handleErrors('', 'capa')}
+                           error={error.capa} />
                     <Button title="CADASTRAR"
                             onPress={validate} />
                 </View>
@@ -83,7 +102,7 @@ const estilos = StyleSheet.create(
         textTitle: {
             color: COLORS.black,
             fontSize: 25,
-            fontWeight: "bold"
+            fontWeight: "bold",
         },
         viewForm: {
             marginVertical: 20,

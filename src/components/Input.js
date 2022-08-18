@@ -6,17 +6,19 @@ import { View,
 
 import COLORS from "../const/colors";
 
-const Input = ({ label, ...props }) => {
+const Input = ({ label, error, ...props }) => {
     return (
-        <View style={estilos.formContainer}>
-            <Text style={estilos.inputLabel}>
+        <View style={estilos.formContainer} >
+            <Text style={estilos.inputLabel} >
                 {label}
-            </Text>
-            <View style={estilos.inputContainer}>
+            </Text> 
+            <View style={[estilos.inputContainer, {borderColor: error ? COLORS.red : COLORS.black}]} >
                 <TextInput style={estilos.textInput} 
                            autoCorrect={false}
-                           {...props}/>
+                           onFocus={() => {onFocus()}}
+                           {...props} />
             </View>
+            <Text style={estilos.errorMessage}>{error}</Text>
         </View>
     )
 }
@@ -24,7 +26,7 @@ const Input = ({ label, ...props }) => {
 const estilos = StyleSheet.create(
     {
         formContainer: {
-            marginBottom: 20,
+            marginBottom: 15,
         },
         inputLabel: {
             marginVertical: 5,
@@ -33,7 +35,7 @@ const estilos = StyleSheet.create(
         },
         inputContainer: {
             height: 55,
-            backgroundColor: COLORS.light,
+            backgroundColor: COLORS.lightGrey,
             flexDirection: "row",
             borderWidth: 0.5,
             borderRadius: 10,
@@ -41,8 +43,12 @@ const estilos = StyleSheet.create(
             alignItems: "center"
         },
         textInput: {
-            color: COLORS.darkBlue,
             flex: 1
+        },
+        errorMessage: {
+            color: COLORS.red,
+            fontSize: 12,
+            paddingTop: 5
         }
     }
 )
