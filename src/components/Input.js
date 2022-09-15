@@ -1,22 +1,26 @@
 import React from "react";
-import { View, 
-         Text,
-         TextInput, 
-         StyleSheet } from "react-native";
+import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+import {
+    View,
+    Text,
+    TextInput,
+    StyleSheet
+} from "react-native";
 
 import COLORS from "../const/colors";
 
-const Input = ({ label, error, ...props }) => {
+const Input = ({ label, error, iconName, ...props }) => {
     return (
         <View style={estilos.formContainer} >
             <Text style={estilos.inputLabel} >
                 {label}
-            </Text> 
-            <View style={[estilos.inputContainer, {borderColor: error ? COLORS.red : COLORS.black}]} >
-                <TextInput style={estilos.textInput} 
-                           autoCorrect={false}
-                           onFocus={() => {onFocus()}}
-                           {...props} />
+            </Text>
+            <View style={[estilos.inputContainer, { borderColor: error ? COLORS.red : COLORS.black }]} >
+                <Icon iconName={iconName} style={estilos.icon} />
+                <TextInput style={estilos.textInput}
+                    autoCorrect={false}
+                    onFocus={() => { onFocus() }}
+                    {...props} />
             </View>
             <Text style={estilos.errorMessage}>{error}</Text>
         </View>
@@ -49,6 +53,11 @@ const estilos = StyleSheet.create(
             color: COLORS.red,
             fontSize: 12,
             paddingTop: 5
+        },
+        icon: {
+            fontSize: 22,
+            color: COLORS.darkBlßue,
+            marginRight: 10,
         }
     }
 )

@@ -1,4 +1,6 @@
 import React, { useState }from "react";
+import apiLivraria from "../service/apiLivraria";
+
 import { Text,
          View, 
          SafeAreaView, 
@@ -60,6 +62,23 @@ const Cadastro = () => {
             validade = false
             handleErrors('Insira uma capa.', 'capa')
         }
+
+        if (validade) {
+            cadastrar()
+            console.log("cadastrou")
+        }
+    }
+
+    const cadastrar = () => {
+        try {
+            const response = apiLivraria.post('/cadastrarLivro', {
+                titulo: inputs.titulo,
+                descricao: inputs.descricao,
+                imagem: inputs.capa
+            })
+        } catch (error) {
+
+        }
     }
 
     return (
@@ -70,14 +89,17 @@ const Cadastro = () => {
                 </Text>
                 <View style={estilos.viewForm}>
                     <Input label="Título" 
+                           iconName="book-outline"
                            onChangeText={(text) => handleOnChange(text, 'titulo')}
                            onFocus={() => handleErrors('', 'titulo')}
                            error={error.titulo} />
                     <Input label="Descrição" 
+                           iconName="card-text-outline"
                            onChangeText={(text) => handleOnChange(text, 'descricao')}
                            onFocus={() => handleErrors('', 'descricao')}
                            error={error.descricao} />
                     <Input label="Capa"
+                           iconName="image-outline"
                            onChangeText={(text) => handleOnChange(text, 'capa')}
                            onFocus={() => handleErrors('', 'capa')}
                            error={error.capa} />
