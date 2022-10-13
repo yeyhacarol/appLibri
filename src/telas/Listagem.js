@@ -1,16 +1,14 @@
 import React, {useState, useEffect} from 'react';
 import apiLivraria from '../service/apiLivraria';
-
 import {
   Text,
   View,
   Image,
-  SafeAreaView,
+  TouchableOpacity,
   ScrollView,
   StyleSheet,
 } from 'react-native';
 
-import COLORS from '../const/colors';
 import capaLivro150 from '../assets/livros/lor150.png';
 
 const Listagem = () => {
@@ -27,10 +25,15 @@ const Listagem = () => {
     <ScrollView>
       <View style={estilos.container}>
         {livros.map(livro => (
-          <View style={estilos.post}>
-            <Image style={estilos.imagem} source={capaLivro150} />
-            <Text style={estilos.titulo}>{livro.titulo}</Text>
-          </View>
+          <TouchableOpacity
+            style={estilos.post}
+            key={livro.cod_livro}
+            onPress={() => {}}>
+            <View style={estilos.conteudo}>
+              <Image style={estilos.imagem} source={capaLivro150} />
+              <Text style={estilos.titulo}>{livro.titulo}</Text>
+            </View>
+          </TouchableOpacity>
         ))}
       </View>
     </ScrollView>
@@ -42,13 +45,16 @@ const estilos = StyleSheet.create({
     alignItems: 'center',
   },
   post: {
-    width: '95%',
+    width: '100%',
     alignItems: 'center',
     backgroundColor: '#ccc',
     padding: 15,
     marginVertical: 5,
     borderRadius: 5,
     elevation: 5,
+  },
+  conteudo: {
+    alignItems: 'center',
   },
   imagem: {
     borderRadius: 5,

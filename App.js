@@ -1,34 +1,24 @@
 import React from 'react';
-import {StyleSheet} from 'react-native';
+// import {NavigationContainer, StackRouter} from '@react-navigation/native';
+// import {createNativeStackNavigator} from '@react-navigation/native-stack';
 
-import Login from './src/telas/Login';
 import Cadastro from './src/telas/Cadastro';
 import Listagem from './src/telas/Listagem';
+import Detalhes from './src/telas/Detalhes';
+
+//const Stack = createNativeStackNavigator();
+
+/* name -> nome que queremos chamar para ir a uma determinada tela; 
+   component -> componente que desejamos renderizar nesse caminho específico;
+   options -> representa as opções da tela que desejamos */
 
 const App = () => {
-  //const nome = 'SENAI - JANDIRA';
   return (
-    // <View>
-    //   <Text style={estilo.titulo}>{nome}</Text>
-    // </View>
-    //<Login />
-    //<Cadastro />
-    <Listagem />
+    <>
+      {/* <Listagem /> */}
+      <Detalhes />
+    </>
   );
 };
-
-const estilo = StyleSheet.create({
-  container: {},
-  titulo: {
-    width: '100%',
-    backgroundColor: '#F00',
-    textAlign: 'center',
-    fontSize: 16,
-    lineHeight: 26,
-    color: '#FFF',
-    fontWeight: 'bold',
-    padding: 16,
-  },
-});
 
 export default App;
