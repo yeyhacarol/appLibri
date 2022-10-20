@@ -9,9 +9,9 @@ import {
   StyleSheet,
 } from 'react-native';
 
-import capaLivro150 from '../assets/livros/lor150.png';
+import imagemLivro150 from '../assets/livros/lor150.png';
 
-const Listagem = () => {
+const Listagem = ({navigation}) => {
   const [livros, setLivros] = useState([]);
 
   useEffect(() => {
@@ -28,9 +28,11 @@ const Listagem = () => {
           <TouchableOpacity
             style={estilos.post}
             key={livro.cod_livro}
-            onPress={() => {}}>
+            onPress={() =>
+              navigation.navigate('Detalhes', {cod_livro: livro.cod_livro})
+            }>
             <View style={estilos.conteudo}>
-              <Image style={estilos.imagem} source={capaLivro150} />
+              <Image style={estilos.imagem} source={imagemLivro150} />
               <Text style={estilos.titulo}>{livro.titulo}</Text>
             </View>
           </TouchableOpacity>

@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import apiLivraria from '../service/apiLivraria';
 
 import {Text, View, SafeAreaView, ScrollView, StyleSheet} from 'react-native';
@@ -7,32 +7,30 @@ import COLORS from '../const/colors';
 import Input from '../components/Input';
 import Button from '../components/Button';
 
-const Cadastro = () => {
-  /* Todo state deve possuir um handler */
-  /* capturando, armazenando dados com state */
+const Editar = ({route, navigation}) => {
   const [inputs, setInputs] = useState({
     titulo: '',
     descricao: '',
     imagem: '',
   });
 
-  /* função para manipular a entrada de dados na state no método onChangeText */
+  const {cod_livro} = route.params;
+
+  useEffect(() => {
+    apiLivraria.get(`/listarLivro/${cod_livro}`).then(data => {
+      setInputs(data.data[0]);
+    });
+  }, []);
+
   const handleOnChange = (text, input) => {
-    /* o parâmetro prevState representa o estado atual do state */
     setInputs(prevState => ({
-      /* inserção de dados no state. 
-               O ...prevState representa cada um dos itens do array do state, o [input] representa cada uma das inputs e o valor delas que vem por meio da digitação é o text. 
-               A utilização do spread(...) é necessária para que os valores sejam comparados e sobreescrevidos. 
-               [input]:text -> remontar o array da state a cada atualização da state, ou seja, a cada digitação */
       ...prevState,
       [input]: text,
     }));
   };
 
-  /* state de erro de preenchimento */
   const [error, setErrors] = useState({});
 
-  /* função para configurar as mensagens de erro na state */
   const handleErrors = (errorMessage, input) => {
     setErrors(prevState => ({
       ...prevState,
@@ -40,7 +38,6 @@ const Cadastro = () => {
     }));
   };
 
-  /* validando dados de cadastro por meio desta função */
   const validate = () => {
     let validate = true;
 
@@ -60,17 +57,20 @@ const Cadastro = () => {
     }
 
     if (validate) {
-      cadastrar();
+      editar();
     }
   };
 
-  const cadastrar = () => {
+  const editar = () => {
     try {
-      const response = apiLivraria.post('/cadastrarLivro', {
+      const response = apiLivraria.put('/alterarLivro', {
         titulo: inputs.titulo,
         descricao: inputs.descricao,
         imagem: inputs.imagem,
+        cod_livro: inputs.cod_livro,
       });
+
+      navigation.goBack();
     } catch (error) {
       console.log(error);
     }
@@ -79,12 +79,13 @@ const Cadastro = () => {
   return (
     <SafeAreaView style={estilos.safe}>
       <ScrollView style={estilos.scroll}>
-        <Text style={estilos.textTitle}>CADASTRO DE LIVROS</Text>
+        <Text style={estilos.textTitle}>EDITAR LIVROS</Text>
         <View style={estilos.viewForm}>
           <Input
             label="Título"
             iconName="book-outline"
             onChangeText={text => handleOnChange(text, 'titulo')}
+            value={inputs.titulo}
             onFocus={() => handleErrors('', 'titulo')}
             error={error.titulo}
           />
@@ -92,6 +93,7 @@ const Cadastro = () => {
             label="Descrição"
             iconName="card-text-outline"
             onChangeText={text => handleOnChange(text, 'descricao')}
+            value={inputs.descricao}
             onFocus={() => handleErrors('', 'descricao')}
             error={error.descricao}
           />
@@ -99,10 +101,11 @@ const Cadastro = () => {
             label="Capa"
             iconName="image-outline"
             onChangeText={text => handleOnChange(text, 'imagem')}
+            value={inputs.imagem}
             onFocus={() => handleErrors('', 'imagem')}
             error={error.imagem}
           />
-          <Button title="CADASTRAR" onPress={validate} />
+          <Button title="EDITAR" onPress={validate} />
         </View>
       </ScrollView>
     </SafeAreaView>
@@ -128,4 +131,4 @@ const estilos = StyleSheet.create({
   },
 });
 
-export default Cadastro;
+export default Editar;

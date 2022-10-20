@@ -4,7 +4,7 @@ import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
 import COLORS from '../const/colors';
 
-const Input = ({label, error, iconName, ...props}) => {
+const Input = ({label, error, iconName, value, ...props}) => {
   return (
     <View style={estilos.formContainer}>
       <Text style={estilos.inputLabel}>{label}</Text>
@@ -16,10 +16,12 @@ const Input = ({label, error, iconName, ...props}) => {
         <Icon name={iconName} style={estilos.icon} />
         <TextInput
           style={estilos.textInput}
+          multiline={true}
           autoCorrect={false}
           onFocus={() => {
             onFocus();
           }}
+          value={value}
           {...props}
         />
       </View>
@@ -38,7 +40,7 @@ const estilos = StyleSheet.create({
     color: COLORS.grey,
   },
   inputContainer: {
-    height: 55,
+    minHeight: 55,
     backgroundColor: COLORS.lightGrey,
     flexDirection: 'row',
     borderWidth: 0.5,

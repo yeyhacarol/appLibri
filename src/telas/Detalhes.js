@@ -11,10 +11,10 @@ import {
 
 import COLORS from '../const/colors';
 
-import capaLivro150 from '../assets/livros/lor150.png';
+import imagemLivro150 from '../assets/livros/lor150.png';
 
-const Detalhes = () => {
-  const cod_livro = 1;
+const Detalhes = ({route, navigation}) => {
+  const {cod_livro} = route.params;
 
   const [livro, setLivro] = useState({
     cod_livro: '',
@@ -27,21 +27,40 @@ const Detalhes = () => {
     apiLivraria.get(`/listarLivro/${cod_livro}`).then(livro => {
       setLivro(livro.data[0]);
     });
-  });
+  }, []);
+
+  /* FUNÇÃO PARA EXCLUIR LIVROS */
+  const excluir = () => {
+    try {
+      apiLivraria.delete(`/excluirLivro/${livro.cod_livro}`);
+
+      navigation.navigate('Listagem');
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   return (
     <ScrollView style={estilos.view}>
       <View style={estilos.container}>
         <View style={estilos.post}>
-          <Image style={estilos.imagem} source={capaLivro150} />
+          <Image style={estilos.imagem} source={imagemLivro150} />
           <Text style={estilos.titulo}>{livro.titulo}</Text>
           <Text style={estilos.descricao}>{livro.descricao}</Text>
         </View>
         <View style={estilos.botoes}>
-          <TouchableOpacity style={estilos.botao} onPress={() => {}}>
+          <TouchableOpacity
+            style={[estilos.botao, {backgroundColor: COLORS.green}]}
+            onPress={() => {
+              navigation.navigate('Editar', {cod_livro: livro.cod_livro});
+            }}>
             <Text style={estilos.textoBotao}>EDITAR</Text>
           </TouchableOpacity>
-          <TouchableOpacity style={estilos.botao} onPress={() => {}}>
+          <TouchableOpacity
+            style={[estilos.botao, {backgroundColor: COLORS.red}]}
+            onPress={() => {
+              excluir();
+            }}>
             <Text style={estilos.textoBotao}>DELETAR</Text>
           </TouchableOpacity>
         </View>
@@ -81,6 +100,7 @@ const estilos = StyleSheet.create({
     textAlign: 'justify',
   },
   botoes: {
+    width: '100%',
     flex: 1,
     flexDirection: 'row',
     padding: 10,
@@ -89,7 +109,7 @@ const estilos = StyleSheet.create({
   botao: {
     width: '50%',
     marginHorizontal: 10,
-    backgroundColor: COLORS.darkBlue,
+    borderRadius: 10,
   },
   textoBotao: {
     padding: 10,
